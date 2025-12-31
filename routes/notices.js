@@ -1,22 +1,27 @@
-var express = require('express');
-var router = express.Router();
-const db = require('../data/database');
+const express = require('express');
+const router = express.Router();
+const noticeRepo = require('../repositories/noticeRepository');
+const { body, validationResult } = require('express-validator');
 
 /* GET users listing. */
 router.get('/', function (req, res) {
   // Query the database
-  const query = db.prepare('SELECT * FROM notices');
-  const notices = query.all().reverse();
+  const notices = noticeRepo.getAll();
 
   res.render('notices', { title: 'Notice Board', notices: notices });
 });
 
 /* POST a new user. */
-router.post('/add', function (req, res) {
+router.post('/add', [
+  body('name').trim().escape().notEmpty(),
+  body('message').trim().escape().notEmpty()
+], function (req, res) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
   const { name, message } = req.body;
-  const insert = db.prepare('INSERT INTO notices (name, message) VALUES (?, ?)');
-
-  insert.run(name, message);
+  noticeRepo.create(name, message);
   res.redirect('/notices');
 });
 
