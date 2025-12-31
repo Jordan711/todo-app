@@ -21,8 +21,8 @@ document.getElementById('shoppingForm').addEventListener('submit', async (e) => 
 document.querySelectorAll('.delete-form').forEach(form => {
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const formData = new URLSearchParams();
-        formData.append('id', e.submitter.value);
+        const formData = new URLSearchParams(new FormData(form));
+        formData.set('id', e.submitter.value);
 
         const response = await fetch(form.action, {
             method: 'POST',

@@ -5,14 +5,15 @@ block content
   hr
   h2 Add New Shopping List Item
   form#shoppingForm(action="/shopping-list/add", method="POST", autocomplete="off")
+    input(type="hidden", name="_csrf", value=csrfToken)
     div
-      label Item: 
+      label Item:
       input(type="text", name="item", required)
     div
-      label Quantity: 
+      label Quantity:
       input(type="number", name="quantity", required)
     div
-      label Store: 
+      label Store:
       input(type="text", name="store", required)
     button(type="submit") Create Shopping List Item
 
@@ -25,7 +26,8 @@ block content
     p #[strong Quantity:] #{item.quantity}
     p #[strong Store:] #{item.store}
     p #[strong Date Posted:] #{item.created_at}
-    form.delete-form(action="/shopping-list/delete", method="POST") 
+    form.delete-form(action="/shopping-list/delete", method="POST")
+      input(type="hidden", name="_csrf", value=csrfToken)
       button(type="submit", name="id", value=item.id) Delete
     hr
 

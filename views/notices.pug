@@ -5,11 +5,12 @@ block content
   hr
   h2 Add New Notice
   form#noticeForm(action="/notices/add", method="POST", autocomplete="off")
+    input(type="hidden", name="_csrf", value=csrfToken)
     div
-      label Name: 
+      label Name:
       input(type="text", name="name", required)
     div
-      label Message: 
+      label Message:
       textarea(name="message", style="width: 100%; height: 100px;", required)
     button(type="submit") Create Notice
 
