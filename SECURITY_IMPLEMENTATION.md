@@ -10,6 +10,7 @@ This document details the comprehensive security improvements implemented across
 
 ## Table of Contents
 
+- [First-Time Setup](#first-time-setup)
 - [What Was Changed](#what-was-changed)
 - [New Dependencies](#new-dependencies)
 - [Security Features](#security-features)
@@ -17,6 +18,123 @@ This document details the comprehensive security improvements implemented across
 - [Development vs Production](#development-vs-production)
 - [Testing & Verification](#testing--verification)
 - [Troubleshooting](#troubleshooting)
+
+---
+
+## First-Time Setup
+
+### When Cloning on a New Device
+
+**The `.env` file is NOT included in the repository** (it's in `.gitignore` for security). You must create it manually.
+
+#### Step-by-Step Instructions:
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd todo-app
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Create `.env` file from template**
+   ```bash
+   cp .env.example .env
+   ```
+
+4. **Generate secure secrets**
+
+   Run this command **twice** to generate two different secrets:
+   ```bash
+   node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+   ```
+
+   **First output:** Copy for `SESSION_SECRET`
+   **Second output:** Copy for `CSRF_SECRET`
+
+5. **Edit `.env` file**
+
+   Open `.env` and replace the placeholder values:
+   ```bash
+   PORT=3000
+   NODE_ENV=development
+   SESSION_SECRET=<paste-first-64-char-hex-here>
+   CSRF_SECRET=<paste-second-64-char-hex-here>
+   ```
+
+6. **Start the application**
+   ```bash
+   npm start
+   ```
+
+7. **Verify it's working**
+
+   Open browser to `http://localhost:3000`
+
+---
+
+### ⚠️ CRITICAL: Secret Security
+
+**Why Secrets Must Be Cryptographically Random:**
+
+The secrets are used to sign CSRF tokens and session identifiers. If an attacker can guess or brute-force your secrets, they can:
+- Forge valid CSRF tokens
+- Bypass all CSRF protection
+- Submit malicious forms as your users
+- Impersonate user sessions
+
+**❌ DO NOT DO THIS:**
+```bash
+# INSECURE - Don't use simple strings!
+SESSION_SECRET=password123
+CSRF_SECRET=mysecret
+SESSION_SECRET=BS
+CSRF_SECRET=random
+```
+
+**Why this is bad:**
+- Predictable and easily guessable
+- Can be brute-forced in seconds
+- Makes all security features useless
+- Defeats the entire purpose of CSRF protection
+
+**✅ DO THIS:**
+```bash
+# SECURE - Use cryptographically random strings
+SESSION_SECRET=9f7e5d3c1b9a8f6e4d2c0a8f6e4d2c0a9f7e5d3c1b9a8f6e4d2c0a8f6e4d2c0
+CSRF_SECRET=5a8f3c2e1d9b7a6c4e8f2d1a9c7b5e3f1a8d6c4b2e9f7a5c3d1e9b7a5c3f1a8d
+```
+
+**Requirements:**
+- Minimum 64 characters (32 bytes in hex)
+- Cryptographically random (use the node command above)
+- Different for each environment
+- Never commit to version control
+- Different for `SESSION_SECRET` and `CSRF_SECRET`
+
+**Think of it like this:**
+Using a weak secret is like putting a cardboard lock on your front door. The door still closes, but it provides zero actual security.
+
+---
+
+### Different Secrets Per Environment = Good
+
+**It's perfectly fine (and recommended) to have different secrets on:**
+- Your development laptop
+- Your teammate's development laptop
+- Your production server
+- Your staging server
+
+**Why this is actually better:**
+- If one environment is compromised, others remain secure
+- You can rotate secrets independently
+- Production secrets stay completely isolated
+- Reduced blast radius of security incidents
+
+**The secrets only need to be consistent within the same running instance of the application.**
 
 ---
 
