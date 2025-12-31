@@ -1,0 +1,22 @@
+extends layout
+
+block content
+  h1= title
+  hr
+  h2 Add New Notice
+  form(action="/notices/add", method="POST")
+    div
+      label Name: 
+      input(type="text", name="name", required)
+    div
+      label Message: 
+      textarea(name="message", style="width: 100%; height: 100px;", required)
+    button(type="submit") Create Notice
+
+  hr
+  h2 Notice List
+  each notice in notices
+    p #[strong Name:] #{notice.name}
+    p #[strong Date Posted:] #{notice.created_at}
+    p #[strong Message:] #{notice.message}
+    hr
