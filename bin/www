@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const os = require('os');
 
 /**
  * Module dependencies.
@@ -7,6 +8,38 @@
 var app = require('../app');
 var debug = require('debug')('todo-app:server');
 var http = require('http');
+
+function getWifiIp() {
+  const interfaces = os.networkInterfaces();
+
+  // Common names for Wi-Fi interfaces across different OS
+  const wifiInterfaceNames = ['Wi-Fi', 'en0', 'wlan0', 'wlp3s0'];
+
+  for (const name of wifiInterfaceNames) {
+    if (interfaces[name]) {
+      for (const iface of interfaces[name]) {
+        // Find the IPv4 address that is not internal
+        if (iface.family === 'IPv4' && !iface.internal) {
+          return iface.address;
+        }
+      }
+    }
+  }
+
+  // Fallback: If no known Wi-Fi name matches, search all for "Wi-Fi" in the name
+  for (const name of Object.keys(interfaces)) {
+    if (name.toLowerCase().includes('wi-fi') || name.toLowerCase().includes('wlan')) {
+      for (const iface of interfaces[name]) {
+        if (iface.family === 'IPv4' && !iface.internal) {
+          return iface.address;
+        }
+      }
+    }
+  }
+
+  return 'Could not detect Wi-Fi IP';
+}
+
 
 /**
  * Get port from environment and store in Express.
@@ -28,6 +61,7 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
+console.log("Backend running on: " + getWifiIp() + ':' + port);
 
 /**
  * Normalize a port into a number, string, or false.
