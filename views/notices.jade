@@ -4,7 +4,7 @@ block content
   h1= title
   hr
   h2 Add New Notice
-  form(action="/notices/add", method="POST")
+  form(action="/notices/add", method="POST", autocomplete="off")
     div
       label Name: 
       input(type="text", name="name", required)
@@ -15,6 +15,8 @@ block content
 
   hr
   h2 Notice List
+  if notices.length === 0
+    p No notices found.
   each notice in notices
     p #[strong Name:] #{notice.name}
     p #[strong Date Posted:] #{notice.created_at}

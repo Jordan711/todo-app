@@ -9,7 +9,6 @@ router.get('/', function (req, res) {
   const notices = query.all().reverse();
 
   res.render('notices', { title: 'Notice Board', notices: notices });
-  // res.send(users);
 });
 
 /* POST a new user. */

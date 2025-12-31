@@ -13,6 +13,14 @@ db.exec(`
     message TEXT NOT NULL,
     created_at TEXT DEFAULT (datetime('now', 'localtime'))
   );
+
+  CREATE TABLE IF NOT EXISTS shopping_list (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    item TEXT NOT NULL,
+    quantity TEXT NOT NULL,
+    store TEXT NOT NULL,
+    created_at TEXT DEFAULT (datetime('now', 'localtime'))
+  );
 `);
 
 module.exports = db;
