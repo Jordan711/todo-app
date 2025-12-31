@@ -4,7 +4,7 @@ block content
   h1= title
   hr
   h2 Add New Notice
-  form(action="/notices/add", method="POST", autocomplete="off")
+  form#noticeForm(action="/notices/add", method="POST", autocomplete="off")
     div
       label Name: 
       input(type="text", name="name", required)
@@ -12,6 +12,23 @@ block content
       label Message: 
       textarea(name="message", style="width: 100%; height: 100px;", required)
     button(type="submit") Create Notice
+
+  script.
+    document.getElementById('noticeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new URLSearchParams(new FormData(form));
+      
+      await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      });
+      
+      window.location.replace('/notices');
+    });
 
   hr
   h2 Notice List
