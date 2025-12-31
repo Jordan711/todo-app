@@ -6,7 +6,7 @@ const db = require('../data/database');
 router.get('/', function (req, res) {
   // Query the database
   const query = db.prepare('SELECT * FROM notices');
-  const notices = query.all();
+  const notices = query.all().reverse();
 
   res.render('notices', { title: 'Notice Board', notices: notices });
   // res.send(users);
