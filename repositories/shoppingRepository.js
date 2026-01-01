@@ -3,8 +3,8 @@ const db = require('../data/database');
 class ShoppingRepository {
     getAll() {
         try {
-            const query = db.prepare('SELECT * FROM shopping_list');
-            return query.all().reverse();
+            const query = db.prepare('SELECT * FROM shopping_list ORDER BY id DESC');
+            return query.all();
         } catch (error) {
             console.error('Error fetching shopping list:', error.message);
             throw new Error('Failed to retrieve shopping list from database');

@@ -3,8 +3,8 @@ const db = require('../data/database');
 class NoticeRepository {
     getAll() {
         try {
-            const query = db.prepare('SELECT * FROM notices');
-            return query.all().reverse();
+            const query = db.prepare('SELECT * FROM notices ORDER BY id DESC');
+            return query.all();
         } catch (error) {
             console.error('Error fetching notices:', error.message);
             throw new Error('Failed to retrieve notices from database');
