@@ -8,4 +8,6 @@ html(lang='en')
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    if title != "Family Apps"
+      a(href="/") < Main Menu
     block content
