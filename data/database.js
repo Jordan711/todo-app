@@ -29,6 +29,7 @@ try {
       item TEXT NOT NULL,
       quantity TEXT NOT NULL,
       store TEXT NOT NULL,
+      checked BOOLEAN DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now', 'localtime'))
     );
   `);

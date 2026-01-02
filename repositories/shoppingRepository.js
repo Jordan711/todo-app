@@ -13,7 +13,7 @@ class ShoppingRepository {
 
     create(item, quantity, store) {
         try {
-            const insert = db.prepare('INSERT INTO shopping_list (item, quantity, store) VALUES (?, ?, ?)');
+            const insert = db.prepare('INSERT INTO shopping_list (item, quantity, store, checked) VALUES (?, ?, ?, 0)');
             return insert.run(item, quantity, store);
         } catch (error) {
             console.error('Error creating shopping item:', error.message);

@@ -22,6 +22,7 @@ block content
   if shoppingList.length === 0
     p No items in the shopping list.
   each item in shoppingList
+    input(type='checkbox', checked=(item.checked == 1))
     p #[strong Item:] #{item.item}
     p #[strong Quantity:] #{item.quantity}
     p #[strong Store:] #{item.store}
