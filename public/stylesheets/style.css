@@ -36,3 +36,38 @@ button {
 button:hover {
   background-color: #0099E6;
 }
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.loading-spinner {
+  display: none;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #00B7FF;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+  display: inline-block;
+}
+
+.loading-spinner.hidden {
+  display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-message {
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+  border-left: 4px solid #d32f2f;
+}
