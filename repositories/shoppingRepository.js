@@ -12,12 +12,17 @@ class ShoppingRepository {
     }
 
     create(item, quantity, store) {
-        try {
-            const insert = db.prepare('INSERT INTO shopping_list (item, quantity, store, checked) VALUES (?, ?, ?, 0)');
-            return insert.run(item, quantity, store);
-        } catch (error) {
-            console.error('Error creating shopping item:', error.message);
-            throw new Error('Failed to create shopping item in database');
+        if (quantity > 0) {
+            try {
+                const insert = db.prepare('INSERT INTO shopping_list (item, quantity, store, checked) VALUES (?, ?, ?, 0)');
+                return insert.run(item, quantity, store);
+            } catch (error) {
+                console.error('Error creating shopping item:', error.message);
+                throw new Error('Failed to create shopping item in database');
+            }
+        } else {
+                console.error("Invalid Quantity: " + quantity);
+                throw new Error('Error: Quantity must be greater than 0');
         }
     }
 

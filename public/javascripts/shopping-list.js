@@ -19,19 +19,21 @@ document.getElementById('shoppingForm').addEventListener('submit', async (e) => 
         const response = await fetch(form.action, {
             method: 'POST',
             body: formData,
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' }
         });
 
         if (response.ok) {
             window.location.replace('/shopping-list');
         } else {
             const data = await response.json();
+            console.log(data.error);
             const errorDiv = document.createElement('div');
             errorDiv.className = 'error-message';
             if (data.errors && data.errors.length > 0) {
+                console.log(data.error);
                 errorDiv.textContent = data.errors.map(err => err.msg).join(', ');
             } else {
-                errorDiv.textContent = 'Error adding item. Please check your input.';
+                errorDiv.textContent = data.error;
             }
             form.insertBefore(errorDiv, form.firstChild);
             submitButton.disabled = false;
@@ -40,7 +42,7 @@ document.getElementById('shoppingForm').addEventListener('submit', async (e) => 
     } catch (error) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
-        errorDiv.textContent = 'Network error. Please try again.';
+        errorDiv.textContent = error;
         form.insertBefore(errorDiv, form.firstChild);
         submitButton.disabled = false;
         spinner.remove();
@@ -63,7 +65,7 @@ document.querySelectorAll('.delete-form').forEach(form => {
             const response = await fetch(form.action, {
                 method: 'POST',
                 body: formData,
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' }
             });
 
             if (response.ok) {

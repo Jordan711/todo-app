@@ -19,7 +19,8 @@ document.getElementById('noticeForm').addEventListener('submit', async (e) => {
             method: 'POST',
             body: formData,
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
             }
         });
 

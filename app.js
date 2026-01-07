@@ -131,13 +131,27 @@ app.use(function (req, res, next) {
 
 // error handler
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
+  // 1. Set basic locals for development debugging
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+  // 2. Set the response status (400, 404, or default to 500)
+  const status = err.status || 500;
+  res.status(status);
+
+  // 3. SMART CHECK: Did this come from your JavaScript fetch()?
+  // fetch() usually sends an 'Accept: application/json' header
+  const isApiRequest = req.headers.accept?.includes('json') || req.xhr;
+
+  if (isApiRequest) {
+    // Return JSON for the Shopping Form/AJAX (regardless of status code)
+    return res.json({
+      error: err.message || "Internal Server Error"
+    });
+  } else {
+    // Return a pretty HTML page for humans browsing the site
+    return res.render('error');
+  }
 });
 
 module.exports = app;
