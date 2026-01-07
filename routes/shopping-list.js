@@ -11,7 +11,7 @@ router.get('/', function (req, res) {
     res.render('shopping-list', { title: 'Shopping List', shoppingList: shoppingList });
 });
 
-/* POST a new user. */
+/* POST a new item. */
 router.post('/add', [
     body('item').trim().escape().notEmpty(),
     body('quantity').trim().isNumeric().escape(),
