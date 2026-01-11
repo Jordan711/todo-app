@@ -25,14 +25,18 @@ block content
     form(action="/shopping-list/check", method="POST", id=`form-${item.id}`)
       input(type="hidden", name="_csrf", value=csrfToken)
       input(type="hidden", name="id", value=item.id)
-      input(
-        type='checkbox', 
-        checked=(item.checked == 1), 
-        name="checked",
-        value=(item.checked == 0),
-        onchange="this.form.submit()" 
-      )
-    p #[strong Item:] #{item.item}
+      table 
+        tr 
+          td(style="width: 10px")
+            input(
+              type='checkbox', 
+              checked=(item.checked == 1), 
+              name="checked",
+              value=(item.checked == 0),
+              onchange="this.form.submit()" 
+            )
+          td 
+            p #[strong Item:] #{item.item}
     p #[strong Quantity:] #{item.quantity}
     p #[strong Store:] #{item.store}
     p #[strong Date Posted:] #{item.created_at}
