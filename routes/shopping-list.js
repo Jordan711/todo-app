@@ -49,4 +49,20 @@ router.post('/delete', [
     }
 });
 
+router.post('/check', [
+    body('id').isInt().toInt().withMessage('ID must be a valid integer')
+], function (req, res, next) {
+    try {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        const { id, checked } = req.body;
+        shoppingRepo.checkItem(id, checked);
+        res.redirect('/shopping-list');
+    } catch (error) {
+        next(error);
+    }
+});
+
 module.exports = router;

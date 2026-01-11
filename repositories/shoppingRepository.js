@@ -35,6 +35,22 @@ class ShoppingRepository {
             throw new Error('Failed to delete shopping item from database');
         }
     }
+
+    checkItem(id, checked) {
+        try {
+            if (checked == null) {
+                const toggleItem = db.prepare('UPDATE shopping_list SET checked = ? WHERE id = ?');
+                return toggleItem.run(0, id);
+            }
+            if (checked == "") {
+                const toggleItem = db.prepare('UPDATE shopping_list SET checked = ? WHERE id = ?');
+                return toggleItem.run(1, id);
+            } 
+        } catch (error) {
+            console.error('Error updating shopping item:', error.message);
+            throw new Error('Failed to update shopping item from database');
+        }
+    }
 }
 
 module.exports = new ShoppingRepository();
