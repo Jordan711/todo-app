@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
 /* POST a new shopping item. */
 router.post('/add', [
     body('item').trim().escape().notEmpty().withMessage('Item is required'),
-    body('quantity').trim().isNumeric().withMessage('Quantity must be a number'),
+    body('quantity').trim().isInt({ min: 1 }).withMessage('Quantity must be at least 1'),
     body('store').trim().escape().notEmpty().withMessage('Store is required')
 ], function (req, res, next) {
     try {
@@ -57,9 +57,9 @@ router.post('/check', [
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }
-        const { id, checked } = req.body;
-        shoppingRepo.checkItem(id, checked);
-        res.redirect('/shopping-list');
+        const { id } = req.body;
+        shoppingRepo.toggleCheck(id);
+        res.json({ success: true });
     } catch (error) {
         next(error);
     }

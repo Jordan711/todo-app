@@ -12,17 +12,12 @@ class ShoppingRepository {
     }
 
     create(item, quantity, store) {
-        if (quantity > 0) {
-            try {
-                const insert = db.prepare('INSERT INTO shopping_list (item, quantity, store, checked) VALUES (?, ?, ?, 0)');
-                return insert.run(item, quantity, store);
-            } catch (error) {
-                console.error('Error creating shopping item:', error.message);
-                throw new Error('Failed to create shopping item in database');
-            }
-        } else {
-                console.error("Invalid Quantity: " + quantity);
-                throw new Error('Error: Quantity must be greater than 0');
+        try {
+            const insert = db.prepare('INSERT INTO shopping_list (item, quantity, store, checked) VALUES (?, ?, ?, 0)');
+            return insert.run(item, quantity, store);
+        } catch (error) {
+            console.error('Error creating shopping item:', error.message);
+            throw new Error('Failed to create shopping item in database');
         }
     }
 
@@ -36,19 +31,13 @@ class ShoppingRepository {
         }
     }
 
-    checkItem(id, checked) {
+    toggleCheck(id) {
         try {
-            if (checked == null) {
-                const toggleItem = db.prepare('UPDATE shopping_list SET checked = ? WHERE id = ?');
-                return toggleItem.run(0, id);
-            }
-            if (checked == "") {
-                const toggleItem = db.prepare('UPDATE shopping_list SET checked = ? WHERE id = ?');
-                return toggleItem.run(1, id);
-            } 
+            const toggle = db.prepare('UPDATE shopping_list SET checked = 1 - checked WHERE id = ?');
+            return toggle.run(id);
         } catch (error) {
-            console.error('Error updating shopping item:', error.message);
-            throw new Error('Failed to update shopping item from database');
+            console.error('Error toggling shopping item:', error.message);
+            throw new Error('Failed to toggle shopping item in database');
         }
     }
 }

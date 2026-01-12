@@ -1,3 +1,34 @@
+// Handle Checkbox Toggle
+document.querySelectorAll('.item-checkbox').forEach(checkbox => {
+    checkbox.addEventListener('change', async (e) => {
+        const id = e.target.dataset.id;
+        const csrfToken = e.target.dataset.csrf;
+        const listItem = e.target.closest('.shopping-item');
+
+        try {
+            const response = await fetch('/shopping-list/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Accept': 'application/json'
+                },
+                body: new URLSearchParams({ id, _csrf: csrfToken })
+            });
+
+            if (response.ok) {
+                listItem.classList.toggle('checked');
+            } else {
+                const data = await response.json();
+                alert(data.error || 'Error updating item');
+                e.target.checked = !e.target.checked;
+            }
+        } catch (error) {
+            alert('Network error. Please try again.');
+            e.target.checked = !e.target.checked;
+        }
+    });
+});
+
 // Handle Add Form
 document.getElementById('shoppingForm').addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -26,14 +57,12 @@ document.getElementById('shoppingForm').addEventListener('submit', async (e) => 
             window.location.replace('/shopping-list');
         } else {
             const data = await response.json();
-            console.log(data.error);
             const errorDiv = document.createElement('div');
             errorDiv.className = 'error-message';
             if (data.errors && data.errors.length > 0) {
-                console.log(data.error);
                 errorDiv.textContent = data.errors.map(err => err.msg).join(', ');
             } else {
-                errorDiv.textContent = data.error;
+                errorDiv.textContent = data.error || 'Error adding item. Please try again.';
             }
             form.insertBefore(errorDiv, form.firstChild);
             submitButton.disabled = false;
@@ -42,7 +71,7 @@ document.getElementById('shoppingForm').addEventListener('submit', async (e) => 
     } catch (error) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'error-message';
-        errorDiv.textContent = error;
+        errorDiv.textContent = error.message || 'Network error. Please try again.';
         form.insertBefore(errorDiv, form.firstChild);
         submitButton.disabled = false;
         spinner.remove();
