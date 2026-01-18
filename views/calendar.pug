@@ -1,7 +1,28 @@
 extends layout
 
+mixin calendar(monthName, totalDays, startDay)
+  .calendar-container
+    h2= monthName
+    .calendar-grid
+      //- Day headers
+      each day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        .day-header= day
+      
+      //- Empty offsets
+      - for (let i = 0; i < startDay; i++)
+        .day-empty
+      
+      //- Actual days
+      - for (let day = 1; day <= totalDays; day++)
+        .day-cell= day
+
+//- Use the mixin
+
+
 block content
   h1= title
   h2 Upcoming Events
   h2 Calendar
+  +calendar('January 2026', 31, 4)
   h2 Past Events
+  
