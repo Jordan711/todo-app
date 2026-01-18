@@ -11,6 +11,7 @@ const { doubleCsrf } = require('csrf-csrf');
 const indexRouter = require('./routes/index');
 const noticesRouter = require('./routes/notices');
 const shoppingListRouter = require('./routes/shopping-list');
+const calendarRouter = require('./routes/calendar');
 
 const app = express();
 
@@ -123,6 +124,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/notices', doubleCsrfProtection, strictLimiter, noticesRouter);
 app.use('/shopping-list', doubleCsrfProtection, strictLimiter, shoppingListRouter);
+app.use('/calendar', doubleCsrfProtection, strictLimiter, calendarRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
