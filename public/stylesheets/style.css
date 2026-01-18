@@ -24,7 +24,8 @@ input {
   border-radius: 4px;
 }
 
-button, .button {
+button,
+.button {
   padding: 8px;
   background-color: #00B7FF;
   color: white;
@@ -37,13 +38,20 @@ button, .button {
   font-size: inherit;
 }
 
-button:hover, .button:hover {
+button:hover,
+.button:hover {
   background-color: #0099E6;
 }
 
-button:disabled, .button:disabled {
+button:disabled,
+.button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.button i,
+button i {
+  margin-right: 8px;
 }
 
 .loading-spinner {
@@ -63,8 +71,13 @@ button:disabled, .button:disabled {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .error-message {

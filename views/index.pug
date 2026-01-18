@@ -3,8 +3,13 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
-  a(href="/notices") Notice Board
+  a.button(href="/notices")
+    i.fas.fa-bullhorn
+    |  Notice Board
   br
   br
-  a(href="/shopping-list") Shopping List
+  a.button(href="/shopping-list")
+    i.fas.fa-shopping-cart
+    |  Shopping List
+
   
