@@ -24,20 +24,24 @@ input {
   border-radius: 4px;
 }
 
-button {
+button, .button {
   padding: 8px;
   background-color: #00B7FF;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  font-family: inherit;
+  font-size: inherit;
 }
 
-button:hover {
+button:hover, .button:hover {
   background-color: #0099E6;
 }
 
-button:disabled {
+button:disabled, .button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
 }
