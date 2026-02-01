@@ -21,6 +21,19 @@ mixin calendar(monthName, totalDays, startDay)
 
 block content
   h1= title
+  form#eventForm(action="/calendar/add", method="POST", autocomplete="off")
+    input(type="hidden", name="_csrf", value=csrfToken)
+    div
+      label Event:
+      input(type="text", name="name", required)
+    div
+      label Date:
+      input(type="date", name="date", required)
+    div
+      label Notes (Optional):
+      textarea(name="notes", style="width: 100%; height: 100px;")
+    button(type="submit") Add Event
+  hr
   h2 Upcoming Events
   h2 Calendar
   +calendar('January 2026', 31, 4)
